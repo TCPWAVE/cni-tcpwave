@@ -5,6 +5,7 @@ CNI Plugin for TIMS IPAM and Kubernetes Integration
 The CNI plugin consists of two components.
   1. CNI Daemon
   2. CNI Plugin
+
 **CNI Daemon** must run on all the nodes provisioned for kubernetes cluster
 as this component is responsible to make interactions with TIMS IPAM. It acts as
 a helper to cni plugin.
@@ -17,6 +18,7 @@ Containers. For the sake of simplicity a kubernetes setup of 3 nodes with 1 mast
 and 2 worker is shown.
 The plugin and daemon must be configured with proper client certificates on all
 nodes before provisioning any containers in the cluster.
+
 ![Architecture diagram of tcpwave cni plugin](kubernetes-cni-design.png)
 
 
