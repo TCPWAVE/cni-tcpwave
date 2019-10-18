@@ -1,4 +1,4 @@
-# Tcpwave CNI Driver
+# TCPWave CNI Driver
 CNI Plugin for TIMS IPAM and Kubernetes Integration
 
 ## Architecture
