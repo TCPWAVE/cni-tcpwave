@@ -10,7 +10,7 @@ The CNI plugin consists of two components.
 as this component is responsible to make interactions with TIMS IPAM. It acts as
 a helper to cni plugin.
 
-**CNI Plugin** is the actual plugin and gets invoked on very container
+**CNI Plugin** is the actual plugin and gets invoked for every container/pod
 add/delete events.
 
 Here is a diagram depicting the interaction of IPAM, CNI-Plugin, CNI-Daemon and
