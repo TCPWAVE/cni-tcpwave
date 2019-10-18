@@ -1,0 +1,90 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: twcni-cfg
+  namespace: kube-system
+  labels:
+    tier: node
+    app: twcni-cfg
+data:
+  ipam_conf_file_name: twcni.conf
+  ## Network Config file contents##
+  ##This key should match the value of the key 'twcni'##
+  twcni.conf: |
+    {
+    "name": "ipam-test",
+    "type": "bridge",
+    "bridge_name":"twBr0",
+    "ipam": {
+        "type": "twcni",
+        "organization_name": "Internal",
+        "primary_domain": "saurabh.tcpwave.com",
+        "network_name": "Kubernetes",
+        "network_addr": "172.168.0.0/16",
+        "network_mask": 16,
+        "subnet": "172.168.1.0/24",
+        "gateway": "172.168.1.1",
+        "routes": [
+          {"dst": "172.168.0.0/24"}
+          ]
+       }
+    }
+
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: twcni-plugin
+  namespace: kube-system
+  labels:
+    tier: node
+    k8s-app: twcni-plugin
+spec:
+  selector:
+      matchLabels:
+        name: twcni-plugin
+  template:
+    metadata:
+      labels:
+        name: twcni-plugin
+    spec:
+      containers:
+      - name: install-cni
+        image: tcpwave/twcni
+        lifecycle:
+              preStop:
+                   exec:
+                     command:
+                        - sh
+                        - "-c"
+                        - "rm -rf /opt/cni/bin/twcni /etc/cni/net.d/ipam_conf_file_name /etc/cni/net.d/${CONF_FILE_NAME}"
+        env:
+        - name: CONF_FILE_NAME
+          valueFrom:
+                configMapKeyRef:
+                   name: twcni-cfg
+                   key: ipam_conf_file_name
+        command: [ "/install/install-cni.sh" ]
+        volumeMounts:
+        - name: conf-loc
+          mountPath: /install/config
+        - name: host-cni-conf
+          mountPath: /etc/cni/net.d/
+        - name: host-cni-bin
+          mountPath: /opt/cni/bin/
+      hostNetwork: true
+      volumes:
+        - name: conf-loc
+          configMap:
+                name: twcni-cfg
+        - name: host-cni-conf
+          hostPath:
+            path: /etc/cni/net.d
+        - name: host-cni-bin
+          hostPath:
+            path: /opt/cni/bin
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate

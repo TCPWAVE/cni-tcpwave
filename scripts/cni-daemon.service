@@ -1,0 +1,8 @@
+[Unit]
+Description=Tcpwave CNI Daemon
+
+[Service]
+ExecStart=/opt/tcpwave/cni-plugin/tcpwave-cni-daemon -log_dir=/opt/tcpwave/logs/ --host=192.168.0.109 --port=7443 --cert=/opt/tcpwave/certs/client.crt --key=/opt/tcpwave/certs/client.key
+
+[Install]
+WantedBy=multi-user.target
