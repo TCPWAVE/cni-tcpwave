@@ -37,5 +37,5 @@ properly for daemon binary and certificates paths and should be registered to
 start at system boot.
 
 **tcpwave-cni** binary should be placed at path **/opt/cni/bin/** and corresponding
-configuration file should be places at path **/etc/cni/etc.d/**.
+configuration file should be places at path **/etc/cni/net.d/**.
 Sample file at **examples/bridge/tcpwave-cni.conf** should be configured properly.
