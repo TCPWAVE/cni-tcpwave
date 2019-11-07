@@ -48,7 +48,7 @@ func LoadConfig() (config *Config) {
 	flag.StringVar(&config.KeyFile, "key", "/opt/tcpwave/certs/client.key", "Client Certificate Key")
 
   flag.StringVar(&config.SocketDir, "socket-dir", "/run/cni", "Directory where tcpwave IPAM daemon sockets are created")
-  flag.StringVar(&config.DriverName, "driver", "twcni", "Name of Tcpwave IPAM driver")
+  flag.StringVar(&config.DriverName, "driver", "tcpwave-cni", "Name of Tcpwave IPAM driver")
 
   flag.Parse()
   //flag.Lookup("log_dir").Value.Set("/path/to/log/dir")
